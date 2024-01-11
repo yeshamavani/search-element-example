@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My First Web Page</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/icomoon/style.css" />
+    <link rel="stylesheet" href="./node_modules/@sourceloop/search-element/styles.css" />
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+      }
+      sourceloop-search-element {
+        display: block;
+        position: relative;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <sourceloop-search-element></sourceloop-search-element>
+
+    <script type="text/javascript" src="./node_modules/@sourceloop/search-element/search-element.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const element = document.querySelector("sourceloop-search-element");
+
+        element.searchProvider = {
+          searchApiRequestWithPromise: () =>
+            Promise.resolve([
+                {
+                  name: "Test",
+                  description: "Test",
+                  rank: 0.4,
+                  source: "ToDo",
+                },
+                {
+                  name: "Akshat",
+                  description: "Dubey",
+                  rank: 0.4,
+                  source: "User",
+                },
+              ]),
+          recentSearchApiRequestWithPromise: () =>
+            Promise.resolve([]),
+        };
+        element.config = new SearchConfiguration({
+          displayPropertyName: "name",
+          models: [
+            {
+              name: "ToDo",
+              displayName: "List",
+              imageUrl: "https://picsum.photos/id/1000/50",
+            },
+            {
+              name: "User",
+              displayName: "Users",
+              imageUrl: "https://picsum.photos/id/1/50",
+            },
+          ],
+          order: [`name ASC`, `description DESC`],
+          hideCategorizeButton: false,
+          placeholder: "Search Lists or Users",
+          categorizeResults: true,
+          saveInRecents: true,
+          limit: 4,
+        });
+        element.addEventListener('clicked', (event) => {
+          console.log(event.detail);
+        });
+        element.addEventListener('searched', (event) => {
+          console.log(event.detail);
+        });
+      });
+    </script>
+  </body>
+</html>
